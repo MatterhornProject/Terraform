@@ -11,3 +11,16 @@ resource "aws_s3_bucket" "bucket" {
     restrict_public_buckets = false
 
 }
+
+  data "aws_iam_policy_document" "bucket_policy" {
+    statement {
+      sid = "AllowPublic"
+      effect = "Allow"
+      actions = ["s3:GetObject"]
+      resources = ["${aws_s3_bucket.bucket.arn}/*"]
+      principals {
+        type = "*"
+        identifiers = ["*"]
+      }
+    }
+  }
